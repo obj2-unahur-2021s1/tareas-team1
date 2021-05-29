@@ -10,14 +10,10 @@ class Tarea(val horasEstimada:Int, val responsable: Empleado){
     //Las horas necesarias para finalizar una tarea son las horas estimadas que requiere divido la cantidad de
     // empleados que tiene asignados (sin contar al responsable de la misma, que no aporta nada para reducir
     // este número).
-    fun cuantoTiempoLlevaTerminar()= horasEstimadas.hora /this.cantidadDeEmpleados()
+    fun cuantoTiempoLlevaTerminar()= horasEstimada /this.cantidadDeEmpleados()
 
 }
 
 class Empleado {
 
-}
-object horasEstimadas
-{
-    val hora =70
 }

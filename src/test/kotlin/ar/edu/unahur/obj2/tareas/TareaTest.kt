@@ -26,8 +26,8 @@ class TareaTest : DescribeSpec({
       describe("cuanto tiempo le lleva una tarea")
       {
           //Saber cuántas horas se necesitan para finalizar una tarea.
-          tarea1.cuantoTiempoLlevaTerminar().shouldBe(23)
-          tarea2.cuantoTiempoLlevaTerminar().shouldBe(70)
+          tarea1.cuantoTiempoLlevaTerminar().shouldBe(16)
+          tarea2.cuantoTiempoLlevaTerminar().shouldBe(24)
       }
   }
 })
