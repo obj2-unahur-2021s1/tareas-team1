@@ -33,5 +33,6 @@ class TareaTest : DescribeSpec({
           tarea1.costoDeTarea().shouldBe(3704)
           tarea2.costoDeTarea().shouldBe(2105)
       }
+
   }
 })
