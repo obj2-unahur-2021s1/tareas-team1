@@ -5,13 +5,13 @@ import io.kotest.matchers.shouldBe
 
 class TareaTest : DescribeSpec({
   describe("Una tarea") {
-      val marcelo = Empleado()
-      val cristian = Empleado()
-      val brian = Empleado()
-      val ezequiel = Empleado()
+      val marcelo = Empleado(36)
+      val cristian = Empleado(30)
+      val brian = Empleado(41)
+      val ezequiel = Empleado(29)
 
-      val tarea1 = Tarea(50, marcelo)
-      val tarea2 = Tarea(24, ezequiel)
+      val tarea1 = Tarea(50, marcelo, 304)
+      val tarea2 = Tarea(24, ezequiel, 689)
 
       tarea1.agregarEmpleado(cristian)
       tarea1.agregarEmpleado(brian)
@@ -25,9 +25,13 @@ class TareaTest : DescribeSpec({
       }
       describe("cuanto tiempo le lleva una tarea")
       {
-          //Saber cuántas horas se necesitan para finalizar una tarea.
           tarea1.cuantoTiempoLlevaTerminar().shouldBe(16)
           tarea2.cuantoTiempoLlevaTerminar().shouldBe(24)
+      }
+
+      describe("costos de tarea") {
+          tarea1.costoDeTarea().shouldBe(3704)
+          tarea2.costoDeTarea().shouldBe(2105)
       }
   }
 })
