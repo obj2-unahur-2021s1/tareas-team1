@@ -1,17 +1,26 @@
 package ar.edu.unahur.obj2.tareas
 
-open class Tarea(val horasEstimadas:Int, val responsable: Empleado, val costosDeInfraestructura: Int){
+interface Tareas {
+    fun nominaDeEmpleados(): List<Any>
+
+    fun cuantoTiempoLlevaTerminar(): Int
+
+    fun costoDeTarea(): Int
+}
+
+class Tarea(val horasEstimadas:Int, val responsable: Empleado, val costosDeInfraestructura: Int): Tareas{
+
     var empleados = mutableListOf<Empleado>()
 
     fun agregarEmpleado(empleado: Empleado) = empleados.add(empleado)
 
+    override fun nominaDeEmpleados() = empleados + responsable
+
     fun cantidadDeEmpleados()=empleados.size
 
-    fun nominaDeEmpleados() = empleados + responsable
+    override fun cuantoTiempoLlevaTerminar()= horasEstimadas /this.cantidadDeEmpleados()
 
-    fun cuantoTiempoLlevaTerminar()= horasEstimadas /this.cantidadDeEmpleados()
-
-    fun costoDeTarea() = this.sueldoDeTodosLosEmpleadosPorLaTarea() + this.sueldoDelResponsablePorLaTarea() + costosDeInfraestructura
+    override fun costoDeTarea() = this.sueldoDeTodosLosEmpleadosPorLaTarea() + this.sueldoDelResponsablePorLaTarea() + costosDeInfraestructura
 
     fun sueldoPorHoraDeTodosLosEmpleados() = empleados.sumBy { it.sueldoPorHora }
 
@@ -20,27 +29,31 @@ open class Tarea(val horasEstimadas:Int, val responsable: Empleado, val costosDe
     fun sueldoDelResponsablePorLaTarea() = responsable.sueldoPorHora * horasEstimadas
 }
 
+
+
+
 class Empleado(val sueldoPorHora: Int) {
 
 
 }
-class TareasDeIntegracion(val responsable: Empleado)
-{
-    var subtareas =mutableListOf<Tarea>()
 
-    fun agregarSubtarea(subtarea: Tarea) = subtareas.add(subtarea)
+class TareasDeIntegracion(val responsable: Empleado): Tareas {
 
-    fun cuantoTiempoLlevaTerminar()= subtareas.sumBy { c->c.cuantoTiempoLlevaTerminar() }+ this.horaDeReuniones()
+    var subtareas =mutableListOf<Tareas>()
+
+    fun agregarSubtarea(subtarea: Tareas) = subtareas.add(subtarea)
+
+    override fun cuantoTiempoLlevaTerminar()= subtareas.sumBy { c->c.cuantoTiempoLlevaTerminar() }+ this.horaDeReuniones()
 
     fun horaDeReuniones()=subtareas.sumBy { c->c.cuantoTiempoLlevaTerminar() }/8
 
-    fun costoDeTarea() = this.costosDeSubtarea() + this.bonusDelResponsable()
+    override fun costoDeTarea() = this.costosDeSubtarea() + this.bonusDelResponsable()
 
     fun costosDeSubtarea() = subtareas.sumBy { it.costoDeTarea() }
 
     fun bonusDelResponsable() = costosDeSubtarea() * 3 / 100
 
-    fun nominaDeEmpleados() = this.nominaDeEmpleadosDeSubtareas().flatten() + responsable
+    override fun nominaDeEmpleados() = this.nominaDeEmpleadosDeSubtareas().flatten() + responsable
 
-    fun nominaDeEmpleadosDeSubtareas() = subtareas.map { it.nominaDeEmpleados() }
+    fun nominaDeEmpleadosDeSubtareas() = subtareas.map{it.nominaDeEmpleados()}
 }
